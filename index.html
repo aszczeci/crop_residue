@@ -1,3 +1,150 @@
-<b>
-this it only a test 
-</b>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Crop Residue Calculator</title>
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+<link href="css/one-page-wonder.css" rel="stylesheet">
+<link  href="css/circle.css" rel="stylesheet">
+</head>
+
+<body onload="main_load()">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+  <div class="container">
+	<a class="navbar-brand" href="#">Crop Residue Calculator</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+	  <span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarResponsive">
+	  <ul class="navbar-nav ml-auto">
+		<li class="nav-item">
+		  <a class="nav-link" href="#">Farms</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="#">Fields</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="#">Photos</a>
+		</li>
+	  </ul>
+	</div>
+  </div>
+</nav>
+
+<header class="masthead text-center text-white">
+  <div class="masthead-content" style="background-image: url('./img/corn_stalk_residue.jpg')">
+  
+	<div class="container">
+	  <h1 class="masthead-heading mb-0">Crop Residue Calculator</h1>
+	  <h2 class="masthead-subheading mb-0">Manage Your Field Better</h2>
+	  <a href="#" onclick="show('section_1'); return false;" class="btn btn-primary btn-xl rounded-pill mt-5">Begin</a>
+	</div>
+  </div>
+
+</header>
+
+<section id="section_1" style="display:none;" >
+  <div class="container">
+	<div class="row align-items-center">
+	  <div class="col-lg-6 order-lg-1">
+		<div class="p-5">
+		  <h2 class="display-4">Please Select Your Picture</h2>
+		  <p>Please select your picture using the button below. You will be prompted to select a file</p>
+		</div>
+		<div class="text-center">
+			<label class="btn btn-primary btn-xl rounded-pill">
+				<div id="input_button_text">Browse</div><input type='file' style='display: none;' id='fileUpload'>
+			</label>
+		</div>		
+	  </div>
+      <div class="col-lg-6 order-lg-2" id="canvas_column">
+
+		  <canvas id="canvas_1" class="" ></canvas>
+		  <!-- <img class="img-fluid rounded-circle" src="img/01.jpg" alt=""> -->
+
+	  </div>
+	</div>
+  </div>
+</section>
+
+<section id="section_2" style="display:none;">
+  <div class="container">
+	<div class="row align-items-center">
+	  <div class="col-lg-6">
+		<div id="color_circles" style="text-align:center">
+			<span class="dot" id="dot_1" onclick="clear_dot(1)"></span>
+			<span class="dot" id="dot_2" onclick="clear_dot(2)"></span>	
+			<span class="dot" id="dot_3" onclick="clear_dot(3)"></span>
+			<span class="dot" id="dot_4" onclick="clear_dot(4)"></span>
+			<span class="dot" id="dot_5" onclick="clear_dot(5)"></span>
+		</div>
+		<div>
+			<button onclick="manipulate_image()">Manipulate Image</button>
+			<button onclick="revert_image()">Revert Image</button>
+			<input onchange="change_tolerance()" id="tolerance_slider" type="range" min="1" max="25" value="5">		
+		</div>
+  </div>	
+	  <div class="col-lg-6">
+		<div class="p-5">
+		  <h2 class="display-4">Select Your Crop Colors</h2>
+		  <p>Click on the residual crops in the picture to highlight them</p>
+		</div>
+	  </div>
+
+
+	</div>
+  </div>
+</section>
+
+<section id="section_3" style="display:none;">
+  <div class="container">
+	<div class="row align-items-center">
+	  <div class="col-lg-6 order-lg-2">
+		<div class="p-5">
+			<div class="c100 p1 big" id="crop_percentage_results_image">
+				<span id="crop_percentage_results">50%</span>
+				<div class="slice">
+					<div class="bar"></div>
+					<div class="fill"></div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	  <div class="col-lg-6 order-lg-1">
+		<div class="p-5">
+		  <h2 class="display-4">Your Crop Residue Results</h2>
+		  <p>Your crop residue has been analyzed. Would you like to export or save?</p>
+		</div>
+	  </div>
+	</div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5 bg-black">
+  <div class="container">
+	<p class="m-0 text-center text-white small">Ontario’s Ministry of Agriculture, Food and Rural Affairs </p>
+  </div>
+  <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+
+<script src="scripts/jquery/jquery.min.js"></script>
+<script src="scripts/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="scripts/script.js"></script>
+</body>
+
+</html>
