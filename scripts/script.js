@@ -163,7 +163,6 @@ function manipulate_image()
 	}
 	var dots = document.querySelectorAll(".dot");
 	var delims = [];
-	var skip = 1;
 	var crop_pixel_count = 0;
 	for (cnt_1 = 0; cnt_1 < dots.length; cnt_1++)
 	{
@@ -171,9 +170,9 @@ function manipulate_image()
 
 	}	
 	ctx.fillStyle = highligh_color;//cover color
-	for (var y = 0; y < canvasHeight; y += skip) 
+	for (var y = 0; y < canvasHeight; y++) 
 	{
-		for (var x = 0; x < canvasWidth; x += skip) 
+		for (var x = 0; x < canvasWidth; x++) 
 		{
 			var index = (y * canvasWidth + x) * 4;
 			var r = imageData.data[index];
