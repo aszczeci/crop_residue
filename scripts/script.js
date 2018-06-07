@@ -10,7 +10,7 @@ var color_dot_pos = 0;
 var canvas  = el("canvas_1"); //useful to define globally since it is used in many places and should remain constant
 var highligh_color = "rgba(0, 255, 255, 1)";
 var tolerance = 5;//%
-var scaling = 1;//scaling image useful for performance and quality 1 to 2 please
+//var scaling = 1;//scaling image useful for performance and quality 1 to 2 please
 var imageData = null;
 var crop_percentage_val = 0;
 function main_load()
@@ -29,7 +29,7 @@ function reset_data()
 	color_dot_pos = 0;
 	canvas  = el("canvas_1");
 	tolerance = 5;
-	scaling = 1;
+	el("tolerance_slider").value = tolerance;
 	imageData = null;
 	crop_percentage_val = 0;
 }
@@ -46,20 +46,19 @@ function readImage()
 			 var max_height = 540;
 			 
 			 
-			 var dimensions = resize(img.width,img.height,max_width,max_height);
+			 var dimensions = resize(img.width,img.height,max_width,max_height);//fit image into max sizes
 			 
-			 canvas.width = dimensions[0]*scaling;
-			 canvas.height = dimensions[1]*scaling;
+			 canvas.width = dimensions[0];
+			 canvas.height = dimensions[1];
 			 
-			 canvas.style.width = img.width;
-			 canvas.style.height = img.height;
+			 //canvas.style.width = img.width;
+			 //canvas.style.height = img.height;
 
 			 var context = canvas.getContext("2d");
-			 canvas.style = "transform:scale("+1/scaling+"); transform-origin: top left; ";//padding:"+(15*scaling)+"px
-		     el("canvas_column").style.width = dimensions[0]+"px";
+			 el("canvas_column").style.width = dimensions[0]+"px"; //canvas column not canvas
 			 el("canvas_column").style.height = dimensions[1]+"px";
 
-			 context.drawImage(img,0,0,dimensions[0]*scaling,dimensions[1]*scaling);
+			 context.drawImage(img,0,0,dimensions[0],dimensions[1]);
 			 el("input_button_text").innerHTML = "Select New Picture";
 			 reset_data();
 			 
@@ -164,7 +163,7 @@ function manipulate_image()
 	}
 	var dots = document.querySelectorAll(".dot");
 	var delims = [];
-	var skip = scaling;
+	var skip = 1;
 	var crop_pixel_count = 0;
 	for (cnt_1 = 0; cnt_1 < dots.length; cnt_1++)
 	{
