@@ -10,7 +10,7 @@ var color_dot_pos = 0;
 var canvas  = el("canvas_1"); //useful to define globally since it is used in many places and should remain constant
 var highligh_color = "rgba(0, 255, 255, 1)";
 var tolerance = 5;//%
-var scaling = 1.5;//scaling image useful for performance and quality 1 to 2 please
+var scaling = 1;//scaling image useful for performance and quality 1 to 2 please
 var imageData = null;
 var crop_percentage_val = 0;
 function main_load()
