@@ -9,10 +9,17 @@ var default_picker_colors = ["#d6d380","#c3d88c","#ccbd8a","#e0d2a3","#c4b583"]
 var color_dot_pos = 0;
 var canvas  = el("canvas_1"); //useful to define globally since it is used in many places and should remain constant
 var highligh_color = "rgba(0, 255, 255, 1)";
-var tolerance = 5;//%
-//var scaling = 1;//scaling image useful for performance and quality 1 to 2 please
+var tolerance = 5;//default val
 var imageData = null;
 var crop_percentage_val = 0;
+var iMouseX, iMouseY = 1;
+var bMouseDown = false;
+var iZoomRadius = 100;
+var iZoomPower = 3;
+var draw_interval = null;
+var image;
+
+
 function main_load()
 {
 	setup_colors();
@@ -50,10 +57,7 @@ function readImage()
 			 
 			 canvas.width = dimensions[0];
 			 canvas.height = dimensions[1];
-			 
-			 //canvas.style.width = img.width;
-			 //canvas.style.height = img.height;
-
+			 canvas.style.display ="block";
 			 var context = canvas.getContext("2d");
 			 el("canvas_column").style.width = dimensions[0]+"px"; //canvas column not canvas
 			 el("canvas_column").style.height = dimensions[1]+"px";
@@ -61,7 +65,9 @@ function readImage()
 			 context.drawImage(img,0,0,dimensions[0],dimensions[1]);
 			 el("input_button_text").innerHTML = "Select New Picture";
 			 reset_data();
-			 
+			 imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+			 image = new Image();
+			 image.src = canvas.toDataURL("image/png");
 			 show("section_2");
            });
            img.src = e.target.result;
@@ -69,6 +75,7 @@ function readImage()
         };       
         FR.readAsDataURL( this.files[0] );
 		el("fileUpload").value = "";
+		
     }
 }
 function resize(width,height,max_width,max_height)
@@ -112,11 +119,12 @@ function change_canvas_color(e)
 {
   x = e.offsetX;
   y = e.offsetY;
-  var ctx1 = canvas.getContext("2d");
-  var imageData = ctx1.getImageData(x, y, 1, 1).data;
+  canvas.getContext('2d').putImageData(imageData,0,0);
+  var imageData_color = canvas.getContext('2d').getImageData(x, y, 1, 1).data;
   rgbaColor =
-    "rgba(" + imageData[0] + "," + imageData[1] + "," + imageData[2] + ",1)";
+    "rgba(" + imageData_color[0] + "," + imageData_color[1] + "," + imageData_color[2] + ",1)";
   apply_to_color_dot(rgbaColor)
+  
 }
 function apply_to_color_dot(color)
 {
@@ -127,6 +135,7 @@ function apply_to_color_dot(color)
 	{
 		color_dot_pos = 0;
 	}
+	manipulate_image();
 	
 }
 function clear_dot(dot_num)
@@ -147,11 +156,11 @@ function change_tolerance()
 }
 function revert_image()
 {
-	var ctx = canvas.getContext('2d');
-	ctx.putImageData(imageData,0,0);
+	refresh_canvas();
 }
 function manipulate_image()
 {
+	refresh_canvas();
 	var canvasWidth  = canvas.width;
 	var canvasHeight = canvas.height;
 	var ctx = canvas.getContext('2d');
@@ -164,39 +173,42 @@ function manipulate_image()
 	var dots = document.querySelectorAll(".dot");
 	var delims = [];
 	var crop_pixel_count = 0;
-	for (cnt_1 = 0; cnt_1 < dots.length; cnt_1++)
+	var dots_length = dots.length
+	for (cnt_1 = 0; cnt_1 < dots_length; cnt_1++)
 	{
 		delims[cnt_1] = getRGB(dots[cnt_1].style.backgroundColor)
 
 	}	
 	ctx.fillStyle = highligh_color;//cover color
+	ctx.globalCompositeOperation = 'source-over';
+	
 	for (var y = 0; y < canvasHeight; y++) 
 	{
 		for (var x = 0; x < canvasWidth; x++) 
 		{
 			var index = (y * canvasWidth + x) * 4;
-			var r = imageData.data[index];
-			var g = imageData.data[index + 1];
-			var b = imageData.data[index + 2];
-			var d = 442;
-			for (var z = 0; z < dots.length; z++)
+			for (var z = 0; z < dots_length; z++)//calling length property of dots inside so many loops in IE slows it down so much, Screw IE.
 			{
-				p = (Math.pow(Math.pow(r-delims[z].red,2)+Math.pow(g-delims[z].green,2)+Math.pow(b-delims[z].blue,2),0.5))/442;
-
-				if(Math.abs(p) < tolerance/100)
+				var holder_function = point_error; //Damned IE support look at document which outlines reasoning for this //https://blogs.msdn.microsoft.com/ie/2006/08/28/ie-javascript-performance-recommendations-part-1/
+				if(holder_function(imageData.data[index],imageData.data[index + 1],imageData.data[index + 2],delims[z],tolerance))
 				{
 					ctx.fillRect( x, y, 1, 1 );
 					crop_pixel_count ++;
 					break;
-					//imageData.data[index] = imageData.data[++index] = imageData.data[++index] = 0;
 				}
 			}
 
 			
 		}
 	}
-	crop_percentage(crop_pixel_count,(canvasWidth*canvasHeight))
 	el("section_3").style.display = "block";
+	crop_percentage(crop_pixel_count,(canvasWidth*canvasHeight))
+	
+}
+function point_error(r,g,b,delims,tolerance)
+{
+	p = (Math.pow(Math.pow(r-delims.red,2)+Math.pow(g-delims.green,2)+Math.pow(b-delims.blue,2),0.5))/442;
+	return Math.abs(p) < tolerance/100
 }
 function crop_percentage(crop_pixel_count,total_pixels)
 {
@@ -215,3 +227,54 @@ function getRGB(str)
     blue: match[3]
   } : {};
 }
+function refresh_canvas()
+{
+	if(imageData)
+	{
+		canvas.getContext('2d').putImageData(imageData,0,0);
+	}
+
+}
+function clear() 
+{
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+}
+function drawScene() 
+{ // main drawScene function
+    clear(); // clear canvas
+    if (bMouseDown) { // drawing zoom area
+		var ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0 - iMouseX * (iZoomPower - 1), 0 - iMouseY * (iZoomPower - 1), ctx.canvas.width * iZoomPower, ctx.canvas.height * iZoomPower);
+        ctx.globalCompositeOperation = 'destination-atop';//source-over
+        var oGrd = ctx.createRadialGradient(iMouseX, iMouseY, 0, iMouseX, iMouseY, iZoomRadius);
+        oGrd.addColorStop(0.8, "rgba(0, 0, 0, 1.0)");
+        oGrd.addColorStop(1.0, "rgba(0, 0, 0, 0.1)");
+        ctx.fillStyle = oGrd;
+        ctx.beginPath();
+        ctx.arc(iMouseX, iMouseY, iZoomRadius, 0, Math.PI*2, true);
+        ctx.closePath();
+        ctx.fill();
+    }
+    // draw source image
+    ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+
+
+$(function()
+{
+    $('#canvas_1').mousemove(function(e) { // mouse move handler
+        var canvasOffset = $(canvas).offset();
+        iMouseX = Math.floor(e.pageX - canvasOffset.left);
+        iMouseY = Math.floor(e.pageY - canvasOffset.top);
+    });
+    $('#canvas_1').mousedown(function(e) { // binding mousedown event
+        bMouseDown = true;
+		draw_interval = setInterval(drawScene, 30); // loop drawScene
+    });
+    $('#canvas_1').mouseup(function(e) { // binding mouseup event
+        bMouseDown = false;
+		clearInterval(draw_interval);
+		manipulate_image();
+    });
+    
+});
