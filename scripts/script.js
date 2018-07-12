@@ -18,6 +18,7 @@ var iZoomRadius = 100;
 var iZoomPower = 3;
 var draw_interval = null;
 var image;
+var localStorage_1 = {}; // remove afterwards
 
 
 function main_load()
@@ -40,43 +41,69 @@ function reset_data()
 	imageData = null;
 	crop_percentage_val = 0;
 }
-function readImage() 
+function Overlay_Modal(option_name)
 {
 	
+	switch(option_name)
+	{
+		case "Farm":
+			el("modal_title").innerHTML = "Select Your "+option_name;
+			el("modal_body").innerHTML = option_name;
+			list_farms()
+			break;
+		case "Field":
+			el("modal_title").innerHTML = "Select Your "+option_name;
+			el("modal_body").innerHTML = option_name;
+			break;
+		case "add_farm":
+			el("modal_title").innerHTML = "Add a New Farm";
+			$("#modal_body").load("includes/modal/new_farm.html")
+			break;
+		case "add_field":
+			el("modal_title").innerHTML = "Add a New Field";
+			el("modal_body").innerHTML = option_name;
+			break;			
+		case "close":
+			$('#Overlay_Modal').modal("hide");
+			break;
+		default:
+			$('#Overlay_Modal').modal("hide");
+			break;
+	}
+	$('#Overlay_Modal').modal('show');
+}
+function readImage() 
+{
+	el("cavas_loading_text").innerHTML = "Loading Please Wait";
     if ( this.files && this.files[0] ) {
         var FR= new FileReader();
-        FR.onload = function(e) {
-           var img = new Image();
-           img.addEventListener("load", function() {
-			 
-		     var max_width = Math.min(screen.width - 16*2,540);
-			 var max_height = 540;
-			 
-			 
-			 var dimensions = resize(img.width,img.height,max_width,max_height);//fit image into max sizes
-			 
-			 canvas.width = dimensions[0];
-			 canvas.height = dimensions[1];
-			 canvas.style.display ="block";
-			 var context = canvas.getContext("2d");
-			 el("canvas_column").style.width = dimensions[0]+"px"; //canvas column not canvas
-			 el("canvas_column").style.height = dimensions[1]+"px";
+		var img = new Image();
+		img.addEventListener("load", function() {
+			var max_width = Math.min(screen.width - 16*2,540);
+			var max_height = 540;
+			var dimensions = resize(img.width,img.height,max_width,max_height);//fit image into max sizes
 
-			 context.drawImage(img,0,0,dimensions[0],dimensions[1]);
-			 el("input_button_text").innerHTML = "Select New Picture";
-			 reset_data();
-			 imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
-			 image = new Image();
-			 image.src = canvas.toDataURL("image/png");
-			 show("section_2");
-           });
-           img.src = e.target.result;
-		   
-        };       
-        FR.readAsDataURL( this.files[0] );
+			canvas.width = dimensions[0];
+			canvas.height = dimensions[1];
+			canvas.style.display ="block";
+			var context = canvas.getContext("2d");
+			//el("canvas_column").style.width = dimensions[0]+"px"; //canvas column not canvas
+			//el("canvas_column").style.height = dimensions[1]+"px";
+			el("cavas_loading_text").innerHTML = "";
+			context.drawImage(img,0,0,dimensions[0],dimensions[1]);
+			el("input_button_text").innerHTML = "Select New Picture";
+			reset_data();
+			imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+			image = new Image();
+			image.src = canvas.toDataURL("image/png");
+			show("section_2");
+			
+		});
+		img.src = (URL || webkit).createObjectURL(this.files[0]); //increased performance vs file readers necessairy for IE
 		el("fileUpload").value = "";
 		
     }
+	
 }
 function resize(width,height,max_width,max_height)
 {
@@ -143,7 +170,7 @@ function clear_dot(dot_num)
 	var dots = document.querySelectorAll(".dot");
 	dots[dot_num-1].style.backgroundColor = "#ffffff";
 	color_dot_pos = dot_num-1;
-	//manipulate_image();
+	manipulate_image();
 }
 function click(e) 
 {
@@ -257,6 +284,16 @@ function drawScene()
     }
     // draw source image
     ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+function list_farms()
+{
+	if(localStorage_1 && localStorage_1.farms && localStorage_1.farms.length > 0)
+	{
+		console.log(localStorage_1.farms);
+	}else{
+		localStorage_1.farms = [];
+		Overlay_Modal("add_farm")
+	}
 }
 
 

@@ -57,6 +57,7 @@ header.masthead {
   overflow: hidden;
   padding-top: calc(0rem + 0px);
   padding-bottom: 0rem;
+  
   /*background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%);
   background-repeat: no-repeat;
   background-position: center center;
@@ -137,7 +138,6 @@ header.masthead .bg-circle-4 {
 .btn-primary {
   background-color: #545454;
   border-color: #545454;
-  width: 100%;
 }
 
 .btn-primary:active, .btn-primary:focus, .btn-primary:hover {
@@ -208,4 +208,14 @@ canvas {
 	border:1px #000 solid;
 	box-shadow:4px 6px 6px #444444;
 	cursor:crosshair;
+}
+.row{
+	margin-top:15px;
+}
+.edit_buttons{
+	flex-grow:1;
+	margin: 5px;
+}
+.main_begin_button{
+	width:100%;
 }

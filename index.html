@@ -8,7 +8,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Crop Residue Calculator</title>
+<title>Soil Residue Calculator</title>
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
@@ -25,20 +25,20 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
   <div class="container">
-	<a class="navbar-brand" href="#">Crop Residue Calculator</a>
+	<a class="navbar-brand" href="#">Soil Residue Calculator</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 	  <span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="navbarResponsive">
 	  <ul class="navbar-nav ml-auto">
 		<li class="nav-item">
-		  <a class="nav-link" href="#">Farms</a>
+		  <a class="nav-link" href="#" onclick="Overlay_Modal('Farm');return false;">Farms</a>
 		</li>
 		<li class="nav-item">
-		  <a class="nav-link" href="#">Fields</a>
+		  <a class="nav-link" href="#" onclick="Overlay_Modal('Field');return false;">Fields</a>
 		</li>
 		<li class="nav-item">
-		  <a class="nav-link" href="#">Photos</a>
+		  <a class="nav-link" href="#" onclick="Overlay_Modal();return false;">Photos</a>
 		</li>
 	  </ul>
 	</div>
@@ -49,9 +49,9 @@
   <div class="masthead-content" style="background-image: url('./img/corn_stalk_residue.jpg')">
   
 	<div class="container">
-	  <h1 class="masthead-heading mb-0">Crop Residue Calculator</h1>
-	  <h2 class="masthead-subheading mb-0">Manage Your Field Better</h2>
-	  <a href="#" onclick="show('section_1'); return false;" class="btn btn-primary btn-xl rounded-pill mt-5">Begin</a>
+	  <h1 class="masthead-heading mb-0">Soil Residue Calculator</h1>
+	  <h2 class="masthead-subheading mb-0">Monitor Your Soil Cover</h2>
+	  <a href="#" onclick="show('section_1'); return false;" class="btn btn-primary btn-xl rounded-pill mt-5 main_begin_button">Begin</a>
 	</div>
   </div>
 
@@ -66,16 +66,15 @@
 		  <p>Please select your picture using the button below. You will be prompted to select a file</p>
 		</div>
 		<div class="text-center">
-			<label class="btn btn-primary btn-xl rounded-pill">
+			<label class="btn btn-primary btn-xl rounded-pill main_begin_button">
 				<div id="input_button_text">Browse</div><input type='file' style='display: none;' id='fileUpload'>
 			</label>
 		</div>		
 	  </div>
       <div class="col-lg-6 order-lg-2" id="canvas_column">
-
+		  <p id="cavas_loading_text" style="margin:0px"></p>
 		  <canvas id="canvas_1" class="" style="display:none"></canvas>
 		  <!-- <img class="img-fluid rounded-circle" src="img/01.jpg" alt=""> -->
-
 	  </div>
 	</div>
   </div>
@@ -92,14 +91,15 @@
 			<span class="dot" id="dot_4" onclick="clear_dot(4)"></span>
 			<span class="dot" id="dot_5" onclick="clear_dot(5)"></span>
 		</div>
-		<div>
-			<label class="btn btn-secondary btn-xl rounded-pill">Apply Changes
+		<div style="display: flex;flex-wrap: wrap;justify-content: center;">
+			<input onchange="change_tolerance()" class="slider" id="tolerance_slider" type="range" min="1" max="25" value="5">
+			<label class="btn btn-secondary btn-xl rounded-pill edit_buttons">Apply Changes
 				<button onclick="manipulate_image()" style='display: none;'></button>
 			</label>
-			<label class="btn btn-secondary btn-xl rounded-pill">Clean Image
+			<label class="btn btn-secondary btn-xl rounded-pill edit_buttons">Clean Image
 				<button onclick="revert_image()" style='display: none;'></button>
 			</label>
-			<input onchange="change_tolerance()" class="slider" id="tolerance_slider" type="range" min="1" max="25" value="5">		
+					
 		</div>
   </div>	
 	  <div class="col-lg-6">
@@ -145,6 +145,23 @@
   </div>
   <!-- /.container -->
 </footer>
+
+<!-- Modal -->
+<div class="modal fade" id="Overlay_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal_body">
+		Body Filler
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Bootstrap core JavaScript -->
 
