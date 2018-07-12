@@ -1,10 +1,5 @@
 <div class="modal-body mx-3">
 	<ul class="list-group" id="modal_farm_list">
-	  <li class="list-group-item">Cras justo odio</li>
-	  <li class="list-group-item">Dapibus ac facilisis in</li>
-	  <li class="list-group-item">Morbi leo risus</li>
-	  <li class="list-group-item">Porta ac consectetur ac</li>
-	  <li class="list-group-item">Vestibulum at eros</li>
 	</ul>
 	<div class="modal-footer d-flex justify-content-center">
 		<button class="btn btn-deep-orange" onclick="Overlay_Modal('add_farm')">Add New Farm</button>
@@ -14,9 +9,7 @@
 var list_conents = "";
 for (i = 0; i < localStorage_1.farms.length; i++) { 
 	element = localStorage_1.farms[i];
-	console.log(element);
 	var list_entry = '<li class="list-group-item d-flex justify-content-between align-items-center modal_list_item" onclick="show_farm('+i+')">'+element.name+' <span class="badge badge-primary badge-pill modal_remove_badge" onclick="event.stopPropagation(); remove_farm('+i+'); return false">X</span></li>'
-	console.log(list_entry);
 	list_conents += list_entry;
 }
 $("#modal_farm_list").html(list_conents);
@@ -29,6 +22,8 @@ function remove_farm(farm_id)
 }
 function show_farm(farm_id)
 {
-alert(farm_id);
+	el("farm_header_link").innerHTML = localStorage_1.farms[farm_id].name;
+	el("farm_header_link").setAttribute('val',farm_id);
+	Overlay_Modal("close");
 }
 </script>

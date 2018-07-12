@@ -53,21 +53,42 @@ function Overlay_Modal(option_name)
 				$("#modal_body").load("includes/modal/farms.html");
 			}else{
 				localStorage_1.farms = [];
+				Overlay_Modal("add_farm");
 				el("modal_title").innerHTML = "Add a New Farm";
 				$("#modal_body").load("includes/modal/new_farm.html")
 			}
+			$('#Overlay_Modal').modal('show');
 			break;
 		case "Field":
-			el("modal_title").innerHTML = "Select Your "+option_name;
-			el("modal_body").innerHTML = option_name;
+			if(localStorage_1 && localStorage_1.farms && localStorage_1.farms.length > 0)
+			{	
+				if(localStorage_1.farms[el("farm_header_link").getAttribute("val")])
+				{
+					if(localStorage_1.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)
+					{
+						el("modal_title").innerHTML = "Add a New Field";
+						$("#modal_body").load("includes/modal/fields.html")
+					}else{
+						Overlay_Modal("add_field");
+					}					
+				}else{
+					alert("select farm"); //defaults to farm 0
+				}
+
+			}else{
+				Overlay_Modal("Farm");
+			}
+			$('#Overlay_Modal').modal('show');
 			break;
 		case "add_farm":
 			el("modal_title").innerHTML = "Add a New Farm";
 			$("#modal_body").load("includes/modal/new_farm.html")
+			$('#Overlay_Modal').modal('show');
 			break;
 		case "add_field":
 			el("modal_title").innerHTML = "Add a New Field";
-			el("modal_body").innerHTML = option_name;
+			$("#modal_body").load("includes/modal/new_field.html")
+			$('#Overlay_Modal').modal('show');
 			break;			
 		case "close":
 			$('#Overlay_Modal').modal("hide");
@@ -76,7 +97,7 @@ function Overlay_Modal(option_name)
 			$('#Overlay_Modal').modal("hide");
 			break;
 	}
-	$('#Overlay_Modal').modal('show');
+	
 }
 function readImage() 
 {

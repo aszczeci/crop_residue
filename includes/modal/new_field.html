@@ -1,0 +1,35 @@
+<div class="modal-body mx-3">
+	<div class="md-form mb-5">
+		<i class="fa fa-user prefix grey-text"></i>
+		<input type="text" id="field_name_input_modal" class="form-control validate">
+		<label>Field Name</label>
+	</div>
+	<div class="md-form mb-5">
+		<i class="fa fa-envelope prefix grey-text"></i>
+		<input type="email" id="field_location_input_modal" class="form-control validate">
+		<label>Location</label>
+		<br><button class="btn btn-deep-orange" onclick="get_field_location_modal()">Get My Location</button>
+	</div>
+	<div class="modal-footer d-flex justify-content-center">
+		<button class="btn btn-deep-orange" onclick="add_field_modal()">Add Field</button>
+	</div>
+</div>
+<script>
+function add_field_modal()
+{
+var field = {name:el("field_name_input_modal").value,location:el("field_location_input_modal").value,crop_percentage:[]}
+localStorage_1.farms[el("farm_header_link").getAttribute("val")].fields.push(field);
+Overlay_Modal("Field");
+}
+function get_field_location_modal()
+{
+    if (navigator.geolocation) {
+		el("field_location_input_modal").value = "Could Not find your Position";
+        navigator.geolocation.getCurrentPosition(function(position) {
+		el("field_location_input_modal").value = "Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude;
+		});
+    } else { 
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+</script>
