@@ -20,7 +20,7 @@ var draw_interval = null;
 var image;
 var localStorage_holder = {}; // remove afterwards
 if(localStorage.farms){
-	localStorage_holder.farms = JSON.parse(localStorage.farms)[0];
+	localStorage_holder.farms = JSON.parse(localStorage.farms);
 }
 
 
