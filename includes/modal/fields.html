@@ -7,22 +7,22 @@
 </div>
 <script>
 var list_conents = "";
-for (i = 0; i < localStorage.farms[el("farm_header_link").getAttribute("val")].fields.length; i++) { 
-	element = localStorage.farms[el("farm_header_link").getAttribute("val")].fields[i];
+for (i = 0; i < localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length; i++) { 
+	element = localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[i];
 	var list_entry = '<li class="list-group-item d-flex justify-content-between align-items-center modal_list_item" onclick="show_field('+i+')">'+element.name+' <span class="badge badge-primary badge-pill modal_remove_badge" onclick="event.stopPropagation(); remove_field('+i+'); return false">X</span></li>'
 	list_conents += list_entry;
 }
 $("#modal_field_list").html(list_conents);
 function remove_field(field_id)
 {
-	if(confirm("Do you want to remove "+localStorage.farms[el("farm_header_link").getAttribute("val")].fields[field_id].name)){
-		localStorage.farms[el("farm_header_link").getAttribute("val")].fields.splice(field_id, 1);
+	if(confirm("Do you want to remove "+localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[field_id].name)){
+		localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.splice(field_id, 1);
 		Overlay_Modal("Field");
 	}
 }
 function show_field(field_id)
 {
-	el("field_header_link").innerHTML = localStorage.farms[el("farm_header_link").getAttribute("val")].fields[field_id].name;
+	el("field_header_link").innerHTML = localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[field_id].name;
 	el("field_header_link").setAttribute('val',field_id);
 	Overlay_Modal("close");
 }
