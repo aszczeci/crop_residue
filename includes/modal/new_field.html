@@ -19,6 +19,7 @@ function add_field_modal()
 {
 var field = {name:el("field_name_input_modal").value,location:el("field_location_input_modal").value,crop_percentage:[]}
 localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.push(field);
+localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
 Overlay_Modal("Field");
 }
 function get_field_location_modal()

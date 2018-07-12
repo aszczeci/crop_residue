@@ -19,6 +19,9 @@ var iZoomPower = 3;
 var draw_interval = null;
 var image;
 var localStorage_holder = {}; // remove afterwards
+if(localStorage.farms){
+	localStorage_holder = JSON.parse(localStorage.farms);
+}
 
 
 function main_load()
@@ -53,6 +56,7 @@ function Overlay_Modal(option_name)
 				$("#modal_body").load("includes/modal/farms.html");
 			}else{
 				localStorage_holder.farms = [];
+				localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
 				Overlay_Modal("add_farm");
 				el("modal_title").innerHTML = "Add a New Farm";
 				$("#modal_body").load("includes/modal/new_farm.html")

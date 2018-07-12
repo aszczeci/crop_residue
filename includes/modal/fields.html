@@ -17,6 +17,7 @@ function remove_field(field_id)
 {
 	if(confirm("Do you want to remove "+localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[field_id].name)){
 		localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.splice(field_id, 1);
+		localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
 		Overlay_Modal("Field");
 	}
 }

@@ -17,6 +17,7 @@ function remove_farm(farm_id)
 {
 	if(confirm("Do you want to remove "+localStorage_holder.farms[farm_id].name)){
 		localStorage_holder.farms.splice(farm_id, 1);
+		localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
 		Overlay_Modal("Farm");
 	}
 }
