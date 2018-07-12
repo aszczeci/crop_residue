@@ -18,7 +18,7 @@
 function add_farm_modal()
 {
 var farm = {name:el("farm_name_input_modal").value,location:el("farm_location_input_modal").value,fields:[]}
-localStorage_1.farms.push(farm);
+localStorage.farms.push(farm);
 //Overlay_Modal("close");
 Overlay_Modal("Farm");
 }

@@ -7,22 +7,22 @@
 </div>
 <script>
 var list_conents = "";
-for (i = 0; i < localStorage_1.farms.length; i++) { 
-	element = localStorage_1.farms[i];
+for (i = 0; i < localStorage.farms.length; i++) { 
+	element = localStorage.farms[i];
 	var list_entry = '<li class="list-group-item d-flex justify-content-between align-items-center modal_list_item" onclick="show_farm('+i+')">'+element.name+' <span class="badge badge-primary badge-pill modal_remove_badge" onclick="event.stopPropagation(); remove_farm('+i+'); return false">X</span></li>'
 	list_conents += list_entry;
 }
 $("#modal_farm_list").html(list_conents);
 function remove_farm(farm_id)
 {
-	if(confirm("Do you want to remove "+localStorage_1.farms[farm_id].name)){
-		localStorage_1.farms.splice(farm_id, 1);
+	if(confirm("Do you want to remove "+localStorage.farms[farm_id].name)){
+		localStorage.farms.splice(farm_id, 1);
 		Overlay_Modal("Farm");
 	}
 }
 function show_farm(farm_id)
 {
-	el("farm_header_link").innerHTML = localStorage_1.farms[farm_id].name;
+	el("farm_header_link").innerHTML = localStorage.farms[farm_id].name;
 	el("farm_header_link").setAttribute('val',farm_id);
 	Overlay_Modal("close");
 }

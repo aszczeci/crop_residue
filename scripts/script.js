@@ -18,7 +18,7 @@ var iZoomRadius = 100;
 var iZoomPower = 3;
 var draw_interval = null;
 var image;
-var localStorage_1 = {}; // remove afterwards
+//var localStorage = {}; // remove afterwards
 
 
 function main_load()
@@ -47,12 +47,12 @@ function Overlay_Modal(option_name)
 	switch(option_name)
 	{
 		case "Farm":
-			if(localStorage_1 && localStorage_1.farms && localStorage_1.farms.length > 0)
+			if(localStorage && localStorage.farms && localStorage.farms.length > 0)
 			{
 				el("modal_title").innerHTML = "Select Your "+option_name;
 				$("#modal_body").load("includes/modal/farms.html");
 			}else{
-				localStorage_1.farms = [];
+				localStorage.farms = [];
 				Overlay_Modal("add_farm");
 				el("modal_title").innerHTML = "Add a New Farm";
 				$("#modal_body").load("includes/modal/new_farm.html")
@@ -60,11 +60,11 @@ function Overlay_Modal(option_name)
 			$('#Overlay_Modal').modal('show');
 			break;
 		case "Field":
-			if(localStorage_1 && localStorage_1.farms && localStorage_1.farms.length > 0)
+			if(localStorage && localStorage.farms && localStorage.farms.length > 0)
 			{	
-				if(localStorage_1.farms[el("farm_header_link").getAttribute("val")])
+				if(localStorage.farms[el("farm_header_link").getAttribute("val")])
 				{
-					if(localStorage_1.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)
+					if(localStorage.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)
 					{
 						el("modal_title").innerHTML = "Add a New Field";
 						$("#modal_body").load("includes/modal/fields.html")
