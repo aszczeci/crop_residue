@@ -219,3 +219,12 @@ canvas {
 .main_begin_button{
 	width:100%;
 }
+.modal_remove_badge{
+	cursor:pointer;
+}
+.modal_remove_badge:active { 
+    background-color: red;
+}
+.modal_list_item{
+	cursor:pointer;
+}

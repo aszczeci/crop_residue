@@ -17,22 +17,20 @@
 <script>
 function add_farm_modal()
 {
-alert(1);
+var farm = {name:el("farm_name_input_modal").value,location:el("farm_location_input_modal").value,fields:[]}
+localStorage_1.farms.push(farm);
+//Overlay_Modal("close");
+Overlay_Modal("Farm");
 }
 function get_farm_location_modal()
 {
     if (navigator.geolocation) {
 		el("farm_location_input_modal").value = "Could Not find your Position";
         navigator.geolocation.getCurrentPosition(function(position) {
-		console.log(position);
 		el("farm_location_input_modal").value = "Latitude: " + position.coords.latitude + " Longitude: " + position.coords.longitude;
 		});
     } else { 
         alert("Geolocation is not supported by this browser.");
     }
-}
-function showPosition(position) {
-	alert(position);
-	
 }
 </script>

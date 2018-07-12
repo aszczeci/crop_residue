@@ -47,9 +47,15 @@ function Overlay_Modal(option_name)
 	switch(option_name)
 	{
 		case "Farm":
-			el("modal_title").innerHTML = "Select Your "+option_name;
-			el("modal_body").innerHTML = option_name;
-			list_farms()
+			if(localStorage_1 && localStorage_1.farms && localStorage_1.farms.length > 0)
+			{
+				el("modal_title").innerHTML = "Select Your "+option_name;
+				$("#modal_body").load("includes/modal/farms.html");
+			}else{
+				localStorage_1.farms = [];
+				el("modal_title").innerHTML = "Add a New Farm";
+				$("#modal_body").load("includes/modal/new_farm.html")
+			}
 			break;
 		case "Field":
 			el("modal_title").innerHTML = "Select Your "+option_name;
@@ -285,16 +291,7 @@ function drawScene()
     // draw source image
     ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
 }
-function list_farms()
-{
-	if(localStorage_1 && localStorage_1.farms && localStorage_1.farms.length > 0)
-	{
-		console.log(localStorage_1.farms);
-	}else{
-		localStorage_1.farms = [];
-		Overlay_Modal("add_farm")
-	}
-}
+
 
 
 $(function()
