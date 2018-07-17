@@ -186,14 +186,11 @@ function setup_colors()
 		dots[cnt_1].style.width = dot_size + "px";
 	}
 }
-function change_canvas_color(e) 
+function change_canvas_color(x,y) 
 {
-  x = e.offsetX;
-  y = e.offsetY;
   canvas.getContext('2d').putImageData(imageData,0,0);
   var imageData_color = canvas.getContext('2d').getImageData(x, y, 1, 1).data;
-  rgbaColor =
-    "rgba(" + imageData_color[0] + "," + imageData_color[1] + "," + imageData_color[2] + ",1)";
+  rgbaColor ="rgba(" + imageData_color[0] + "," + imageData_color[1] + "," + imageData_color[2] + ",1)";
   apply_to_color_dot(rgbaColor)
   
 }
@@ -216,9 +213,17 @@ function clear_dot(dot_num)
 	color_dot_pos = dot_num-1;
 	manipulate_image();
 }
-function click(e) 
+function click() 
 {
-	change_canvas_color(e);
+	x = iMouseX;
+	y = iMouseY;
+	change_canvas_color(x,y);
+}
+function mobile_click()
+{
+	x = iMouseX;
+	y = iMouseY;
+	change_canvas_color(x,y);
 }
 function change_tolerance()
 {
@@ -312,22 +317,28 @@ function clear()
 }
 function drawScene() 
 { // main drawScene function
-    clear(); // clear canvas
+    
     if (bMouseDown) { // drawing zoom area
+		clear(); // clear canvas
 		var ctx = canvas.getContext('2d');
         ctx.drawImage(image, 0 - iMouseX * (iZoomPower - 1), 0 - iMouseY * (iZoomPower - 1), ctx.canvas.width * iZoomPower, ctx.canvas.height * iZoomPower);
         ctx.globalCompositeOperation = 'destination-atop';//source-over
         var oGrd = ctx.createRadialGradient(iMouseX, iMouseY, 0, iMouseX, iMouseY, iZoomRadius);
         oGrd.addColorStop(0.8, "rgba(0, 0, 0, 1.0)");
-        oGrd.addColorStop(1.0, "rgba(0, 0, 0, 0.1)");
+        oGrd.addColorStop(1.0, "rgba(0, 0, 0, 0)");
         ctx.fillStyle = oGrd;
         ctx.beginPath();
         ctx.arc(iMouseX, iMouseY, iZoomRadius, 0, Math.PI*2, true);
         ctx.closePath();
         ctx.fill();
+		ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
+		var ctx = canvas.getContext("2d");
+		ctx.globalCompositeOperation = 'source-over';//source-over
+		ctx.lineWidth=3;
+		ctx.beginPath();
+		ctx.arc(iMouseX, iMouseY, 10, 0, 2 * Math.PI);
+		ctx.stroke();
     }
-    // draw source image
-    ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
 }
 function CurrentDate(){
 	var today = new Date();
@@ -379,7 +390,7 @@ $(function()
 	
     $('#canvas_1').mousedown(function(e) { // binding mousedown event
         bMouseDown = true;
-		draw_interval = setInterval(drawScene, 30); // loop drawScene
+		draw_interval = setInterval(drawScene, 30); // loop drawScene performance tuning availability for IE :(
     });
     $('#canvas_1').mouseup(function(e) { // binding mouseup event
         bMouseDown = false;
@@ -387,20 +398,20 @@ $(function()
 		manipulate_image();
     });
 	//mobile o_O
-	/*
 	$('#canvas_1').bind('touchmove',function(e) { // mouse move handler
-        var canvasOffset = $(canvas).offset();
-        iMouseX = Math.floor(e.pageX - canvasOffset.left);
-        iMouseY = Math.floor(e.pageY - canvasOffset.top);
+		var canvasOffset = $(canvas).offset();
+        iMouseX = Math.floor(e.changedTouches[0].pageX - canvasOffset.left-50); //-50 so it appears above finger not under
+        iMouseY = Math.floor(e.changedTouches[0].pageY - canvasOffset.top-50);
+		drawScene();
+		e.preventDefault();
     });
-    $('#canvas_1').bind('touchstart mousedown',function(e) { // binding mousedown event
-        bMouseDown = true;
-		draw_interval = setInterval(drawScene, 30); // loop drawScene
-    });
-    $('#canvas_1').bind('touchend mouseup',function(e) { // binding mouseup event
-        bMouseDown = false;
-		clearInterval(draw_interval);
+    $('#canvas_1').bind('touchstart',function(e) { // binding mousedown event
+		bMouseDown = true;
+	});
+    $('#canvas_1').bind('touchend',function(e) { // binding mouseup event
+		bMouseDown = false;
 		manipulate_image();
+		mobile_click();
     });	
-    */
+    
 });
