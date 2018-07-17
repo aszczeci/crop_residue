@@ -1,6 +1,6 @@
 <div class="modal-body mx-3">
 	<div class="table-responsive">
-		<table>
+		<table class="table">
 			<thead>
 				<tr>
 					<th>Date (dd/mm/yyyy)</th>
@@ -32,8 +32,8 @@ if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[
 $("#historical_results_table_body").html(list_conents);
 function remove_results(result_id)
 {
-	if(confirm("Do you want to remove results on "+localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].crop_percentage[i].date)){
-		localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].crop_percentage.splice(field_id, 1);
+	if(confirm("Do you want to remove results on "+localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].crop_percentage[result_id].date)){
+		localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].crop_percentage.splice(result_id, 1);
 		localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms));
 		Overlay_Modal("historical_results");
 	}
