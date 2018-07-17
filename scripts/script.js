@@ -370,6 +370,7 @@ function SaveResults()
 
 $(function()
 {
+	/*
     $('#canvas_1').mousemove(function(e) { // mouse move handler
         var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.pageX - canvasOffset.left);
@@ -384,5 +385,21 @@ $(function()
 		clearInterval(draw_interval);
 		manipulate_image();
     });
+	*/
+	//mobile o_O
+	$('#canvas_1').bind('touchmove mousemove',function(e) { // mouse move handler
+        var canvasOffset = $(canvas).offset();
+        iMouseX = Math.floor(e.pageX - canvasOffset.left);
+        iMouseY = Math.floor(e.pageY - canvasOffset.top);
+    });
+    $('#canvas_1').bind('touchstart mousedown',function(e) { // binding mousedown event
+        bMouseDown = true;
+		draw_interval = setInterval(drawScene, 30); // loop drawScene
+    });
+    $('#canvas_1').bind('touchend mouseup',function(e) { // binding mouseup event
+        bMouseDown = false;
+		clearInterval(draw_interval);
+		manipulate_image();
+    });	
     
 });
