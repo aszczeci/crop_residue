@@ -370,12 +370,13 @@ function SaveResults()
 
 $(function()
 {
-	/*
+	
     $('#canvas_1').mousemove(function(e) { // mouse move handler
         var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.pageX - canvasOffset.left);
         iMouseY = Math.floor(e.pageY - canvasOffset.top);
     });
+	
     $('#canvas_1').mousedown(function(e) { // binding mousedown event
         bMouseDown = true;
 		draw_interval = setInterval(drawScene, 30); // loop drawScene
@@ -385,14 +386,13 @@ $(function()
 		clearInterval(draw_interval);
 		manipulate_image();
     });
-	*/
 	//mobile o_O
-	$('#canvas_1').bind('touchmove mousemove',function(e) { // mouse move handler
-	e.preventDefault();
+	/*
+	$('#canvas_1').bind('touchmove',function(e) { // mouse move handler
         var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.pageX - canvasOffset.left);
         iMouseY = Math.floor(e.pageY - canvasOffset.top);
-    },false);
+    });
     $('#canvas_1').bind('touchstart mousedown',function(e) { // binding mousedown event
         bMouseDown = true;
 		draw_interval = setInterval(drawScene, 30); // loop drawScene
@@ -402,5 +402,5 @@ $(function()
 		clearInterval(draw_interval);
 		manipulate_image();
     });	
-    
+    */
 });
