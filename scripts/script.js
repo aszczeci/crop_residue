@@ -316,6 +316,16 @@ function drawScene()
     // draw source image
     ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
 }
+function SaveResults()
+{
+	if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")] && localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")])
+	{
+		alert("Saved");
+	}else{
+		alert("Select Farm and Field");
+	}
+	//localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")];
+}
 
 
 
