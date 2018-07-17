@@ -58,8 +58,6 @@ function Overlay_Modal(option_name)
 				localStorage_holder.farms = [];
 				localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
 				Overlay_Modal("add_farm");
-				el("modal_title").innerHTML = "Add a New Farm";
-				$("#modal_body").load("includes/modal/new_farm.html")
 			}
 			$('#Overlay_Modal').modal('show');
 			break;
@@ -70,7 +68,7 @@ function Overlay_Modal(option_name)
 				{
 					if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)
 					{
-						el("modal_title").innerHTML = "Add a New Field";
+						el("modal_title").innerHTML = "Select Your "+option_name;
 						$("#modal_body").load("includes/modal/fields.html")
 					}else{
 						Overlay_Modal("add_field");
@@ -101,6 +99,7 @@ function Overlay_Modal(option_name)
 				{
 					el("modal_title").innerHTML = "Past Results";
 					$("#modal_body").load("includes/modal/historical_results.html");//load page
+					$('#Overlay_Modal').modal('show');
 				}else{
 					Overlay_Modal("add_field");
 				}					
@@ -351,7 +350,7 @@ function SaveResults()
 	{
 		if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")])
 		{
-			var field_results = {day:CurrentDate(),results:crop_percentage_val};
+			var field_results = {date:CurrentDate(),results:crop_percentage_val};
 			localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].crop_percentage.push(field_results);
 			localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms));
 			alert("Saved");
