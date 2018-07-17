@@ -392,7 +392,7 @@ $(function()
         var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.pageX - canvasOffset.left);
         iMouseY = Math.floor(e.pageY - canvasOffset.top);
-    });
+    },false);
     $('#canvas_1').bind('touchstart mousedown',function(e) { // binding mousedown event
         bMouseDown = true;
 		draw_interval = setInterval(drawScene, 30); // loop drawScene
