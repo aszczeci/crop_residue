@@ -45,7 +45,7 @@
   -o-border-radius: 50%;
   border-radius: 50%;
   float: left;
-  margin: 0 0.1em 0.1em 0;
+  margin: 0 0.1em 0.1em 0.1em;
   background-color: #cccccc;
 }
 .c100 *, .c100 *:before, .c100 *:after {
