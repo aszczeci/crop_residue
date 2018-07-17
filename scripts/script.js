@@ -18,10 +18,12 @@ var iZoomRadius = 100;
 var iZoomPower = 3;
 var draw_interval = null;
 var image;
-var localStorage_holder = {}; // remove afterwards
+var localStorage_holder = {}; 
+/*
 if(localStorage.farms){
 	localStorage_holder.farms = JSON.parse(localStorage.farms);
 }
+//*/
 
 
 function main_load()
@@ -386,11 +388,12 @@ $(function()
         var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.pageX - canvasOffset.left);
         iMouseY = Math.floor(e.pageY - canvasOffset.top);
+		drawScene();
     });
 	
     $('#canvas_1').mousedown(function(e) { // binding mousedown event
         bMouseDown = true;
-		draw_interval = setInterval(drawScene, 30); // loop drawScene performance tuning availability for IE :(
+		//draw_interval = setInterval(drawScene, 30); // loop drawScene performance tuning availability for IE :(
     });
     $('#canvas_1').mouseup(function(e) { // binding mouseup event
         bMouseDown = false;
@@ -407,13 +410,11 @@ $(function()
     });
     $('#canvas_1').bind('touchstart',function(e) { // binding mousedown event
 		bMouseDown = true;
-	    e.preventDefault();
 	});
     $('#canvas_1').bind('touchend',function(e) { // binding mouseup event
 		bMouseDown = false;
 		manipulate_image();
 		mobile_click();
-	    e.preventDefault();
     });	
     
 });
