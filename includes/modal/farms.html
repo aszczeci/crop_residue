@@ -25,6 +25,8 @@ function show_farm(farm_id)
 {
 	el("farm_header_link").innerHTML = localStorage_holder.farms[farm_id].name;
 	el("farm_header_link").setAttribute('val',farm_id);
+	el("field_header_link").innerHTML = "FIELDS";
+	el("field_header_link").setAttribute('val',0);
 	Overlay_Modal("close");
 }
 </script>

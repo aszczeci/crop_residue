@@ -97,7 +97,7 @@ function Overlay_Modal(option_name)
 			{	
 				if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)//if set farm has fields
 				{
-					el("modal_title").innerHTML = "Past Results";
+					el("modal_title").innerHTML = "Past Results: "+localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].name;
 					$("#modal_body").load("includes/modal/historical_results.html");//load page
 					$('#Overlay_Modal').modal('show');
 				}else{
@@ -346,7 +346,7 @@ function CurrentDate(){
 }
 function SaveResults()
 {
-	if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")])
+	if(localStorage_holder && localStorage_holder.farms && localStorage_holder.farms[el("farm_header_link").getAttribute("val")])
 	{
 		if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")])
 		{
