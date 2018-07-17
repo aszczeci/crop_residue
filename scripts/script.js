@@ -388,6 +388,7 @@ $(function()
 	*/
 	//mobile o_O
 	$('#canvas_1').bind('touchmove mousemove',function(e) { // mouse move handler
+	e.preventDefault();
         var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.pageX - canvasOffset.left);
         iMouseY = Math.floor(e.pageY - canvasOffset.top);
