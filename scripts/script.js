@@ -353,7 +353,9 @@ function SaveResults()
 			var field_results = {date:CurrentDate(),results:crop_percentage_val};
 			localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].crop_percentage.push(field_results);
 			localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms));
-			alert("Saved");
+			//alert("Saved");
+			show("section_1");
+			Overlay_Modal('historical_results');
 		}else{
 			alert("Please Create A Field");
 			Overlay_Modal('Field');
