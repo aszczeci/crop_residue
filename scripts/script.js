@@ -100,7 +100,7 @@ function Overlay_Modal(option_name)
 				if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)//if set farm has fields
 				{
 					el("modal_title").innerHTML = "Past Results";
-					$("#modal_body").load("includes/modal/fields.html");//load page
+					$("#modal_body").load("includes/modal/historical_results.html");//load page
 				}else{
 					Overlay_Modal("add_field");
 				}					
@@ -357,7 +357,7 @@ function SaveResults()
 			alert("Saved");
 		}else{
 			alert("Please Create A Field");
-			Overlay_Modal('Farm');
+			Overlay_Modal('Field');
 		}
 	}else{
 		alert("Please Create A Farm");
