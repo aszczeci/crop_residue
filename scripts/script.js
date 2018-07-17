@@ -93,7 +93,21 @@ function Overlay_Modal(option_name)
 			el("modal_title").innerHTML = "Add a New Field";
 			$("#modal_body").load("includes/modal/new_field.html")
 			$('#Overlay_Modal').modal('show');
-			break;			
+			break;
+		case "historical_results":
+			if(localStorage_holder && localStorage_holder.farms && localStorage_holder.farms.length > 0 && localStorage_holder.farms[el("farm_header_link").getAttribute("val")])//if farm exists adn set
+			{	
+				if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)//if set farm has fields
+				{
+					el("modal_title").innerHTML = "Past Results";
+					$("#modal_body").load("includes/modal/fields.html");//load page
+				}else{
+					Overlay_Modal("add_field");
+				}					
+			}else{
+				Overlay_Modal("Farm");
+			}
+			break;
 		case "close":
 			$('#Overlay_Modal').modal("hide");
 			break;
@@ -316,15 +330,39 @@ function drawScene()
     // draw source image
     ctx.drawImage(image, 0, 0, ctx.canvas.width, ctx.canvas.height);
 }
+function CurrentDate(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; 
+	var yyyy = today.getFullYear();
+
+	if(dd<10) {
+		dd = '0'+dd
+	} 
+
+	if(mm<10) {
+		mm = '0'+mm
+	} 
+	return dd + '/' + mm + '/' + yyyy;
+}
 function SaveResults()
 {
-	if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")] && localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")])
+	if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")])
 	{
-		alert("Saved");
+		if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")])
+		{
+			var field_results = {day:CurrentDate(),results:crop_percentage_val};
+			localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].crop_percentage.push(field_results);
+			localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms));
+			alert("Saved");
+		}else{
+			alert("Please Create A Field");
+			Overlay_Modal('Farm');
+		}
 	}else{
-		alert("Select Farm and Field");
+		alert("Please Create A Farm");
+		Overlay_Modal('Farm');
 	}
-	//localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")];
 }
 
 
