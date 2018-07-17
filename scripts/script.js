@@ -19,11 +19,10 @@ var iZoomPower = 3;
 var draw_interval = null;
 var image;
 var localStorage_holder = {}; 
-/*
 if(localStorage.farms){
 	localStorage_holder.farms = JSON.parse(localStorage.farms);
 }
-//*/
+
 
 
 function main_load()
