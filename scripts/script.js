@@ -407,11 +407,13 @@ $(function()
     });
     $('#canvas_1').bind('touchstart',function(e) { // binding mousedown event
 		bMouseDown = true;
+	    e.preventDefault();
 	});
     $('#canvas_1').bind('touchend',function(e) { // binding mouseup event
 		bMouseDown = false;
 		manipulate_image();
 		mobile_click();
+	    e.preventDefault();
     });	
     
 });
