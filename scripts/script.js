@@ -34,13 +34,11 @@ function main_load()
 	el("fileUpload").addEventListener("change", readImage, false);
 	window.onresize = function(){ setTimeout(function (){	location.reload();}, 500);}//refresh page on screen resizing
 	//Bellow Allows for off-line access while still lazy loading. -_- :/
-	/*
 	$.get( "includes/modal/farms.html", function( data ) {  sessionStorage.setItem('farms', data);});
 	$.get( "includes/modal/fields.html", function( data ) {  sessionStorage.setItem('fields', data);});
 	$.get( "includes/modal/historical_results.html", function( data ) {  sessionStorage.setItem('historical_results', data);});
 	$.get( "includes/modal/new_farm.html", function( data ) {  sessionStorage.setItem('new_farm', data);});
 	$.get( "includes/modal/new_field.html", function( data ) {  sessionStorage.setItem('new_field', data);});
-	*/
 }
 function el(id)
 {
@@ -64,7 +62,7 @@ function Overlay_Modal(option_name)
 			if(localStorage_holder && localStorage_holder.farms && localStorage_holder.farms.length > 0)
 			{
 				el("modal_title").innerHTML = "Select Your "+option_name;
-				$("#modal_body").load("includes/modal/farms.html", function(responseText,stat){if(stat !== "success"){alert("failed");}});
+				$("#modal_body").load("includes/modal/farms.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.farms)}});
 			}else{
 				localStorage_holder.farms = [];
 				localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
@@ -80,7 +78,8 @@ function Overlay_Modal(option_name)
 					if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)
 					{
 						el("modal_title").innerHTML = "Select Your "+option_name;
-						$("#modal_body").load("includes/modal/fields.html")
+						//$("#modal_body").load("includes/modal/fields.html");
+						$("#modal_body").load("includes/modal/fields.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.fields)}});
 					}else{
 						Overlay_Modal("add_field");
 					}					
@@ -95,12 +94,14 @@ function Overlay_Modal(option_name)
 			break;
 		case "add_farm":
 			el("modal_title").innerHTML = "Add a New Farm";
-			$("#modal_body").load("includes/modal/new_farm.html")
+			//$("#modal_body").load("includes/modal/new_farm.html");
+			$("#modal_body").load("includes/modal/new_farm.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.new_farm)}});
 			$('#Overlay_Modal').modal('show');
 			break;
 		case "add_field":
 			el("modal_title").innerHTML = "Add a New Field";
-			$("#modal_body").load("includes/modal/new_field.html")
+			$("#modal_body").load("includes/modal/new_field.html");
+			$("#modal_body").load("includes/modal/new_field.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.new_field)}});
 			$('#Overlay_Modal').modal('show');
 			break;
 		case "historical_results":
@@ -110,6 +111,7 @@ function Overlay_Modal(option_name)
 				{
 					el("modal_title").innerHTML = "Past Results: "+localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].name;
 					$("#modal_body").load("includes/modal/historical_results.html");//load page
+					$("#modal_body").load("includes/modal/historical_results.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.historical_results)}});
 					$('#Overlay_Modal').modal('show');
 				}else{
 					Overlay_Modal("add_field");
