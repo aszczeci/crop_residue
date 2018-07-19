@@ -19,11 +19,11 @@ var iZoomPower = 3;
 var draw_interval = null;
 var image;
 var localStorage_holder = {}; 
-/*
+
 if(localStorage.farms){
 	localStorage_holder.farms = JSON.parse(localStorage.farms);
 }
-*/
+
 
 
 
@@ -78,7 +78,6 @@ function Overlay_Modal(option_name)
 					if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)
 					{
 						el("modal_title").innerHTML = "Select Your "+option_name;
-						//$("#modal_body").load("includes/modal/fields.html");
 						$("#modal_body").load("includes/modal/fields.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.fields)}});
 					}else{
 						Overlay_Modal("add_field");
@@ -94,7 +93,6 @@ function Overlay_Modal(option_name)
 			break;
 		case "add_farm":
 			el("modal_title").innerHTML = "Add a New Farm";
-			//$("#modal_body").load("includes/modal/new_farm.html");
 			$("#modal_body").load("includes/modal/new_farm.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.new_farm)}});
 			$('#Overlay_Modal').modal('show');
 			break;
