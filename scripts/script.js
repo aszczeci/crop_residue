@@ -84,7 +84,6 @@ function Overlay_Modal(option_name)
 				}else{
 					alert("select farm"); //defaults to farm 0
 				}
-
 			}else{
 				Overlay_Modal("Farm");
 			}
@@ -107,7 +106,6 @@ function Overlay_Modal(option_name)
 				if(localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields.length > 0)//if set farm has fields
 				{
 					el("modal_title").innerHTML = "Past Results: "+localStorage_holder.farms[el("farm_header_link").getAttribute("val")].fields[el("field_header_link").getAttribute("val")].name;
-					$("#modal_body").load("includes/modal/historical_results.html");//load page
 					$("#modal_body").load("includes/modal/historical_results.html", function(responseText,stat){if(stat != "success"){$("#modal_body").html(sessionStorage.historical_results)}});
 					$('#Overlay_Modal').modal('show');
 				}else{
@@ -319,7 +317,6 @@ function refresh_canvas()
 	{
 		canvas.getContext('2d').putImageData(imageData,0,0);
 	}
-
 }
 function clear() 
 {
@@ -327,7 +324,6 @@ function clear()
 }
 function drawScene() 
 { // main drawScene function
-    
     if (bMouseDown) { // drawing zoom area
 		clear(); // clear canvas
 		var ctx = canvas.getContext('2d');
@@ -350,16 +346,15 @@ function drawScene()
 		ctx.stroke();
     }
 }
-function CurrentDate(){
+function CurrentDate()
+{
 	var today = new Date();
 	var dd = today.getDate();
 	var mm = today.getMonth()+1; 
 	var yyyy = today.getFullYear();
-
 	if(dd<10) {
 		dd = '0'+dd
 	} 
-
 	if(mm<10) {
 		mm = '0'+mm
 	} 
@@ -386,8 +381,6 @@ function SaveResults()
 		Overlay_Modal('Farm');
 	}
 }
-
-
 
 $(function()
 {
