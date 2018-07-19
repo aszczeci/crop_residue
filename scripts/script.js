@@ -19,9 +19,11 @@ var iZoomPower = 3;
 var draw_interval = null;
 var image;
 var localStorage_holder = {}; 
+/*
 if(localStorage.farms){
 	localStorage_holder.farms = JSON.parse(localStorage.farms);
 }
+*/
 
 
 
@@ -30,7 +32,15 @@ function main_load()
 	setup_colors();
 	canvas.addEventListener("click", click, false);
 	el("fileUpload").addEventListener("change", readImage, false);
-	//window.onresize = function(){ setTimeout(function (){	location.reload();}, 500);}//refresh page on screen resizing
+	window.onresize = function(){ setTimeout(function (){	location.reload();}, 500);}//refresh page on screen resizing
+	//Bellow Allows for off-line access while still lazy loading. -_- :/
+	/*
+	$.get( "includes/modal/farms.html", function( data ) {  sessionStorage.setItem('farms', data);});
+	$.get( "includes/modal/fields.html", function( data ) {  sessionStorage.setItem('fields', data);});
+	$.get( "includes/modal/historical_results.html", function( data ) {  sessionStorage.setItem('historical_results', data);});
+	$.get( "includes/modal/new_farm.html", function( data ) {  sessionStorage.setItem('new_farm', data);});
+	$.get( "includes/modal/new_field.html", function( data ) {  sessionStorage.setItem('new_field', data);});
+	*/
 }
 function el(id)
 {
@@ -54,7 +64,7 @@ function Overlay_Modal(option_name)
 			if(localStorage_holder && localStorage_holder.farms && localStorage_holder.farms.length > 0)
 			{
 				el("modal_title").innerHTML = "Select Your "+option_name;
-				$("#modal_body").load("includes/modal/farms.html");
+				$("#modal_body").load("includes/modal/farms.html", function(responseText,stat){if(stat !== "success"){alert("failed");}});
 			}else{
 				localStorage_holder.farms = [];
 				localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
