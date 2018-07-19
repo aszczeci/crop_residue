@@ -32,7 +32,6 @@ function main_load()
 	setup_colors();
 	canvas.addEventListener("click", click, false);
 	el("fileUpload").addEventListener("change", readImage, false);
-	window.onresize = function(){ setTimeout(function (){	location.reload();}, 500);}//refresh page on screen resizing
 	//Bellow Allows for off-line access while still lazy loading. -_- :/
 	$.get( "includes/modal/farms.html", function( data ) {  sessionStorage.setItem('farms', data);});
 	$.get( "includes/modal/fields.html", function( data ) {  sessionStorage.setItem('fields', data);});
