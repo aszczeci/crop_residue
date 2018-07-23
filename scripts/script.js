@@ -1,9 +1,8 @@
 /*
+
 Main Script File for Crop Residue Application
 
-
 */
-
 //Defaults
 var default_picker_colors = ["#d6d380","#c3d88c","#ccbd8a","#e0d2a3","#c4b583"]
 var color_dot_pos = 0;
@@ -12,7 +11,7 @@ var highligh_color = "rgba(0, 255, 255, 1)";
 var tolerance = 5;//default val
 var imageData = null;
 var crop_percentage_val = 0;
-var iMouseX, iMouseY = 1;
+var iMouseX, iMouseY = 1; //Mouse position on canvas
 var bMouseDown = false;
 var iZoomRadius = 100;
 var iZoomPower = 3;
@@ -257,42 +256,53 @@ function manipulate_image()
 	var dots = document.querySelectorAll(".dot");
 	var delims = [];
 	var crop_pixel_count = 0;
-	var dots_length = dots.length
+	var dots_length = dots.length; //damned IE
 	for (cnt_1 = 0; cnt_1 < dots_length; cnt_1++)
 	{
-		delims[cnt_1] = getRGB(dots[cnt_1].style.backgroundColor)
+		delims[cnt_1] = getRGB(dots[cnt_1].style.backgroundColor);
 
-	}	
+	}
 	ctx.fillStyle = highligh_color;//cover color
 	ctx.globalCompositeOperation = 'source-over';
-	
+	var t0 = performance.now();
+	var img_data = imageData.data; //shaves off 500ms in IE ohh god why is IE still supported.
+	var holder_function = point_error; //Damned IE support look at document which outlines reasoning for this //https://blogs.msdn.microsoft.com/ie/2006/08/28/ie-javascript-performance-recommendations-part-1/
+	var index = 0;
 	for (var y = 0; y < canvasHeight; y++) 
 	{
+		
 		for (var x = 0; x < canvasWidth; x++) 
 		{
-			var index = (y * canvasWidth + x) * 4;
+
+			index = (y * canvasWidth + x) * 4;
 			for (var z = 0; z < dots_length; z++)//calling length property of dots inside so many loops in IE slows it down so much, Screw IE.
 			{
-				var holder_function = point_error; //Damned IE support look at document which outlines reasoning for this //https://blogs.msdn.microsoft.com/ie/2006/08/28/ie-javascript-performance-recommendations-part-1/
-				if(holder_function(imageData.data[index],imageData.data[index + 1],imageData.data[index + 2],delims[z],tolerance))
+				if(holder_function(img_data[index],img_data[index + 1],img_data[index + 2],delims[z].red,delims[z].green,delims[z].blue))
 				{
 					ctx.fillRect( x, y, 1, 1 );
 					crop_pixel_count ++;
-					break;
+					break;					
 				}
 			}
-
-			
+		
 		}
 	}
+	var t1 = performance.now();
+	console.log(t1-t0);	
 	el("section_3").style.display = "block";
 	crop_percentage(crop_pixel_count,(canvasWidth*canvasHeight))
 	
 }
-function point_error(r,g,b,delims,tolerance)
+function point_error(x0,x1,x2,y0,y1,y2)
 {
-	p = (Math.pow(Math.pow(r-delims.red,2)+Math.pow(g-delims.green,2)+Math.pow(b-delims.blue,2),0.5))/442;
-	return Math.abs(p) < tolerance/100
+	d1 = x0-y0;
+	d2 = x1-y1;
+	d3 = x2-y2;
+	return Math.sqrt(d1*d1+d2*d2+d3*d3)/422 < tolerance/100;
+}
+function squared(x)
+{
+	return x*x
 }
 function crop_percentage(crop_pixel_count,total_pixels)
 {
@@ -303,12 +313,12 @@ function crop_percentage(crop_pixel_count,total_pixels)
 	//crop_percentage_results_image
 }
 function getRGB(str)
-{
+{ //converting to int saved 900ms in IE MB for not catching that earlier I thought delims was already an int32
   var match = str.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
   return match ? {
-    red: match[1],
-    green: match[2],
-    blue: match[3]
+    red: parseInt(match[1]),
+    green: parseInt(match[2]),
+    blue: parseInt(match[3])
   } : {};
 }
 function refresh_canvas()
@@ -399,7 +409,7 @@ $(function()
     $('#canvas_1').mouseup(function(e) { // binding mouseup event
         bMouseDown = false;
 		clearInterval(draw_interval);
-		manipulate_image();
+		//manipulate_image();
     });
 	//mobile o_O
 	$('#canvas_1').bind('touchmove',function(e) { // mouse move handler
@@ -414,7 +424,7 @@ $(function()
 	});
     $('#canvas_1').bind('touchend',function(e) { // binding mouseup event
 		bMouseDown = false;
-		manipulate_image();
+		//manipulate_image();
 		mobile_click();
     });	
     
