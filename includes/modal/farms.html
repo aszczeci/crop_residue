@@ -15,7 +15,7 @@ for (i = 0; i < localStorage_holder.farms.length; i++) {
 $("#modal_farm_list").html(list_conents);
 function remove_farm(farm_id)
 {
-	if(confirm("Do you want to remove "+localStorage_holder.farms[farm_id].name)){
+	if(confirm("Do you want to remove "+localStorage_holder.farms[farm_id].name + " and all of its fields?")){
 		localStorage_holder.farms.splice(farm_id, 1);
 		localStorage.setItem('farms',JSON.stringify(localStorage_holder.farms))
 		Overlay_Modal("Farm");

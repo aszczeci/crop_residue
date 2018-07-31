@@ -12,7 +12,7 @@ var tolerance = 5;//default val
 var iZoomRadius = 150;
 var iZoomPower = 4;
 var iMouseX, iMouseY = 1; //Mouse position on canvas
-var draw_interval = null, imageData = null, color_dot_pos = 0, localStorage_holder = {}, bMouseDown = false, crop_percentage_val = 0
+var draw_interval = null, imageData = null, color_dot_pos = 0, localStorage_holder = {}, bMouseDown = false, crop_percentage_val = 0, results_inverted = false;
 var image;
 var canvas  = el("img_canvas"); //useful to define globally since it is used in many places and should remain constant
 
@@ -222,7 +222,7 @@ function change_tolerance()
 }
 function manipulate_image() //applies color matching
 {
-	refresh_canvas();
+	refresh_canvas(); // remove current overlay
 	var canvasWidth  = canvas.width;
 	var canvasHeight = canvas.height;
 	var ctx = canvas.getContext('2d');
@@ -337,6 +337,21 @@ function CurrentDate()
 	} 
 	return dd + '/' + mm + '/' + yyyy;
 }
+function toggel_invert()
+{
+	results_inverted = !results_inverted;
+	if(results_inverted)
+	{
+		//invert is true
+	}
+	else
+	{
+		//invert is false
+	}
+	crop_percentage_val = Math.abs(100 - crop_percentage_val);// invert result
+	el("crop_percentage_results_image").className = 'c100 p'+crop_percentage_val+' big';;
+	el("crop_percentage_results").innerHTML = crop_percentage_val+'%';
+}
 function SaveResults()
 {
 	if(localStorage_holder && localStorage_holder.farms && localStorage_holder.farms[el("farm_header_link").getAttribute("val")])
@@ -365,28 +380,32 @@ $(function()
         var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.pageX - canvasOffset.left);
         iMouseY = Math.floor(e.pageY - canvasOffset.top);
-		drawScene();
+		//drawScene();
     });
 	
     $('#img_canvas').mousedown(function(e) { // binding mousedown event
         bMouseDown = true;
+		draw_interval = setInterval(drawScene, 30);
     });
     $('#img_canvas').mouseup(function(e) { // binding mouseup event
         bMouseDown = false;
+		clearInterval(draw_interval);
     });
 	//mobile o_O
 	$('#img_canvas').bind('touchmove',function(e) { // mouse move handler
 		var canvasOffset = $(canvas).offset();
         iMouseX = Math.floor(e.changedTouches[0].pageX - canvasOffset.left-50); //-50 so it appears above finger not under
         iMouseY = Math.floor(e.changedTouches[0].pageY - canvasOffset.top-50);
-		drawScene();
+		//drawScene();
 		e.preventDefault();
     });
     $('#img_canvas').bind('touchstart',function(e) { // binding mousedown event
 		bMouseDown = true;
+		draw_interval = setInterval(drawScene, 50);
 	});
     $('#img_canvas').bind('touchend',function(e) { // binding mouseup event
 		bMouseDown = false;
+		clearInterval(draw_interval);
 		click();
     });	
     

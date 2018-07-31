@@ -92,7 +92,7 @@
 			<!--<span class="dot" id="dot_5" onclick="clear_dot(5)"></span>-->
 		</div>
 		<div style="display: flex;flex-wrap: wrap;justify-content: center;">
-			<input onclick="change_tolerance()" class="slider" id="tolerance_slider" type="range" min="1" max="25" value="5">
+			<input onchange="change_tolerance()" class="slider" id="tolerance_slider" type="range" min="1" max="25" value="5">
 			<label class="btn btn-secondary btn-xl rounded-pill edit_buttons">Apply Changes
 				<button onclick="manipulate_image()" style='display: none;'></button>
 			</label>
@@ -119,12 +119,19 @@
 	<div class="row align-items-center">
 	  <div class="col-lg-6 order-lg-2">
 		<div class="p-5">
+		<div style="width:100%; display:inline-block;">
 			<div class="c100 p1 big" id="crop_percentage_results_image">
 				<span id="crop_percentage_results" onclick="SaveResults()">50%</span>
 				<div class="slice">
 					<div class="bar"></div>
 					<div class="fill"></div>
 				</div>
+			</div>
+		</div>
+			<div >
+				<label class="btn btn-secondary btn-xl rounded-pill invert_button_class" >Invert Results
+					<button onclick="toggel_invert()" style='display: none;'></button>
+				</label>
 			</div>
 		</div>
 	  </div>

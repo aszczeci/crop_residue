@@ -222,3 +222,7 @@ header.masthead .bg-circle-4 {
 .modal_list_item{
 	cursor:pointer;
 }
+.invert_button_class{
+	padding: 0px;
+    width: 15em;
+}
